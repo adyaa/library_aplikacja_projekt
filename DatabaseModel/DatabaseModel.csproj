@@ -120,6 +120,9 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\libraryapp\Views\Purchase\NewPurchase.cshtml">
+      <Link>NewPurchase.cshtml</Link>
+    </None>
     <None Include="App.Config" />
     <None Include="Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>

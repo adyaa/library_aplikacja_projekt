@@ -1,11 +1,12 @@
-﻿@model IEnumerable<DatabaseModel.PurTemDetailsTable>
+﻿
+@model IEnumerable<DatabaseModel.PurTemDetailsTable>
 
-@{
+
+    @{
     ViewBag.Title = "Dostawa";
-}
-
-<script src="~/Scripts/jquery-3.4.1.js"></script>
-@using (Html.BeginForm("AddItem", "Purchase", FormMethod.Post, null))
+    }
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    @using (Html.BeginForm("AddItem", "Purchase", FormMethod.Post, null))
 
 {
 
@@ -21,7 +22,7 @@
                 <select class="form-control" id="BID" name="BID" required></select>
             </div>
         </div>
-         
+
         <div class="form-group">
             <label class="control-label col-md-2">Ilość</label>
             <div class="col-md-6">
@@ -46,33 +47,36 @@
 
 
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Nowe zamówienie</h6>
-        <h3 class="text-danger">@ViewBag.Message</h3>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive table-hover">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>
-                            Tytuł książki
-                        </th>
-                        <th>
-                            Ilość
-                        </th>
-                        <th>
-                            Cena jednostkowa
-                        </th>
-                        <th>
-                            Akcje
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Nowe zamówienie</h6>
+            <h3 class="text-danger">@ViewBag.Message</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table-hover">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                Tytuł książki
+                            </th>
+                            <th>
+                                Ilość
+                            </th>
+                            <th>
+                                Cena jednostkowa
+                            </th>
+                            <th>
+                                Cena zamówienia
+                            </th>
+                            <th>
+                                Akcje
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                    @foreach (var item in Model)
+                        @foreach (var item in Model)
                     {
                         <tr>
                             <td>
@@ -84,7 +88,9 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.UnitPrice)
                             </td>
-
+                            <td>
+                                @(string.Format("{0:0.00}", Math.Truncate(item.Qty * item.UnitPrice *10)/10)) zł
+                            </td>
                             <td>
                                 @Html.ActionLink("Usuń", "DeleteConfirm", new { id = item.PurTemID }, new { @class = "btn btn-danger" })
                             </td>
@@ -92,13 +98,29 @@
                     }
 
 
-                </tbody>
-            </table>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color:#3366ff; color:white;">Łączna suma wszystkich zamówień</td>
+                            <td style="background-color:#3366ff; color:white;">
+                                @(string.Format("{0:0.00}", Math.Truncate(ViewBag.TotalAmount * 10) / 10)) zł
+                            </td>
+                            <td></td>
+
+                        </tr>
+                    </tfoot>
+                </table>
+                <div style="margin-top:20px; float:right">
+                    @Html.ActionLink("Następny", "SelectSupplier", null, new { @class = "btn btn-success", style = "padding:20px;" })
+                    @Html.ActionLink("Anuluj", "CancelPurchase", null, new { @class = "btn btn-success", style = "padding:20px;" })
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 	$(document).ready(function () {
 
 		$.ajax({
@@ -115,7 +137,7 @@
 			}
 		});
 	});
-</script>
+    </script>
 
 
 
